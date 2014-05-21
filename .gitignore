@@ -1,3 +1,6 @@
 .metadata
-week-1-assignment-0-v2/.idea
-week-1-assignment-0/bin
+*/.idea
+*/bin
+*/classes
+*.iml
+global_libs
