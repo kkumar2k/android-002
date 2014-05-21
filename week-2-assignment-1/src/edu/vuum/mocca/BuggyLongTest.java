@@ -90,7 +90,9 @@ class BuggyLongTest
                          */
                         mStopLatch.countDown();
                     }
-                    catch (Exception e) { }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 }).start();
 
@@ -112,6 +114,8 @@ class BuggyLongTest
 
             System.out.println("Finishing BuggyLongTest");
         }
-        catch (Exception e) { }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
