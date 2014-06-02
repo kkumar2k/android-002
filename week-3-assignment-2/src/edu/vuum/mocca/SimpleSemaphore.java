@@ -54,11 +54,16 @@ public class SimpleSemaphore {
      */
     public void acquire() throws InterruptedException {
         // TODO - you fill in here.
+
+        // locking...
         mLock.lockInterruptibly();
         try {
+            // if no permits available we should wait
             if (mPermits == 0) {
                 noPermits.await();
             }
+            // after wait is over we take a permit and decrease
+            // it count after that
             mPermits--;
         } finally {
             mLock.unlock();
@@ -72,11 +77,16 @@ public class SimpleSemaphore {
      */
     public void acquireUninterruptibly() {
         // TODO - you fill in here.
+
+        // locking...
         mLock.lock();
         try {
+            // if no permits available we should wait
             if (mPermits == 0) {
                 noPermits.awaitUninterruptibly();
             }
+            // after wait is over we take a permit and decrease
+            // it count after that
             mPermits--;
         } finally {
             mLock.unlock();
@@ -88,9 +98,13 @@ public class SimpleSemaphore {
      */
     void release() {
         // TODO - you fill in here.
+
+        // locking...
         mLock.lock();
         try {
+            // increment permit count
             mPermits++;
+            // letting know interesting threads that Condition has been met
             noPermits.signal();
         } finally {
             mLock.unlock();
