@@ -17,7 +17,7 @@ public class SimpleSemaphore {
      * Define a ReentrantLock to protect the critical section.
      */
     // TODO - you fill in here
-    private ReentrantLock mLock;
+    private ReentrantLock lock;
 
     /**
      * Define a Condition that waits while the number of permits is 0.
@@ -30,7 +30,7 @@ public class SimpleSemaphore {
      */
     // TODO - you fill in here.  Make sure that this data member will
     // ensure its values aren't cached by multiple Threads..
-    private volatile int mPermits;
+    private volatile int permits;
 
     public SimpleSemaphore(int permits, boolean fair) {
         // TODO - you fill in here to initialize the SimpleSemaphore,
@@ -38,13 +38,13 @@ public class SimpleSemaphore {
         // semantics.
 
         // declare number of permits
-        mPermits = permits;
+        this.permits = permits;
 
         // initialize the Lock
-        mLock = new ReentrantLock(fair);
+        lock = new ReentrantLock(fair);
 
         // initialize the Condition Object
-        noPermits = mLock.newCondition();
+        noPermits = lock.newCondition();
 
     }
 
@@ -56,17 +56,17 @@ public class SimpleSemaphore {
         // TODO - you fill in here.
 
         // locking...
-        mLock.lockInterruptibly();
+        lock.lockInterruptibly();
         try {
             // if no permits available we should wait
-            while (mPermits == 0) {
+            while (permits == 0) {
                 noPermits.await();
             }
             // after wait is over we take a permit and decrease
             // it count after that
-            mPermits--;
+            permits--;
         } finally {
-            mLock.unlock();
+            lock.unlock();
         }
 
     }
@@ -79,17 +79,17 @@ public class SimpleSemaphore {
         // TODO - you fill in here.
 
         // locking...
-        mLock.lock();
+        lock.lock();
         try {
             // if no permits available we should wait
-            while (mPermits == 0) {
+            while (permits == 0) {
                 noPermits.awaitUninterruptibly();
             }
             // after wait is over we take a permit and decrease
             // it count after that
-            mPermits--;
+            permits--;
         } finally {
-            mLock.unlock();
+            lock.unlock();
         }
     }
 
@@ -100,14 +100,14 @@ public class SimpleSemaphore {
         // TODO - you fill in here.
 
         // locking...
-        mLock.lock();
+        lock.lock();
         try {
             // increment permit count
-            mPermits++;
+            permits++;
             // letting know interesting threads that Condition has been met
             noPermits.signal();
         } finally {
-            mLock.unlock();
+            lock.unlock();
         }
     }
 
@@ -117,6 +117,6 @@ public class SimpleSemaphore {
     public int availablePermits() {
         // TODO - you fill in here by changing null to the appropriate
         // return value.
-        return mPermits;
+        return permits;
     }
 }
