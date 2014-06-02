@@ -59,7 +59,7 @@ public class SimpleSemaphore {
         mLock.lockInterruptibly();
         try {
             // if no permits available we should wait
-            if (mPermits == 0) {
+            while (mPermits == 0) {
                 noPermits.await();
             }
             // after wait is over we take a permit and decrease
@@ -82,7 +82,7 @@ public class SimpleSemaphore {
         mLock.lock();
         try {
             // if no permits available we should wait
-            if (mPermits == 0) {
+            while (mPermits == 0) {
                 noPermits.awaitUninterruptibly();
             }
             // after wait is over we take a permit and decrease
